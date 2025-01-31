@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Info Validator</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="pywebview-drag-region bg-gray-100 flex items-center justify-center min-h-screen">
+    <!-- Close Button 
+    <button onclick="closePage()" 
+        class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full shadow-lg hover:bg-red-600 transition">
+        ❌ Close
+    </button>  -->
+    <div class="w-full max-w-5xl bg-white shadow-lg rounded-xl p-6 relative">
+      
+        <h1 class="text-2xl font-semibold text-gray-700 text-center mb-4">📂 Drag & Drop File Upload</h1>
+
+        <!-- Drop Zone -->
+        <div id="drop-zone" 
+            class="border-2 border-dashed border-gray-400 bg-gray-50 hover:bg-gray-100 flex flex-col items-center justify-center p-10 rounded-lg transition cursor-pointer">
+            <p class="text-gray-600 text-lg">Drag & drop files here</p>
+            <p class="text-gray-500 text-sm">or click to browse</p>
+        </div>
+
+        <!-- Hidden File Input -->
+        <input type="file" id="file-input" multiple hidden>
+
+        <!-- Table -->
+        <div class="mt-6">
+            <table class="w-full border-collapse shadow-sm rounded-lg overflow-hidden">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700 uppercase text-sm">
+                        <th class="py-2 px-4 text-left">Filename</th>
+                        <th class="py-2 px-4 text-left">Title</th>
+                        <th class="py-2 px-4 text-left">Validation</th>                        
+                    </tr>
+                </thead>
+                <tbody id="file-list" class="bg-white divide-y divide-gray-200">
+                    <!-- File info will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById("drop-zone");
+        const fileInput = document.getElementById("file-input");
+        const fileList = document.getElementById("file-list");
+
+        // Open file picker on click
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        // Drag & drop functionality
+        dropZone.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropZone.classList.add("bg-gray-200");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("bg-gray-200");
+        });
+
+        dropZone.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropZone.classList.remove("bg-gray-200");
+            handleFiles(event.dataTransfer.files);
+        });
+
+        // Handle file selection
+        fileInput.addEventListener("change", (event) => {
+            handleFiles(event.target.files);
+        });
+
+        function handleFiles(files) {
+            let formData = new FormData();
+            for (let file of files) {
+                formData.append("files", file);
+            }
+
+            fetch("/upload/", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                fileList.innerHTML = "";
+                data.files.forEach(file => {
+                    let row = `<tr class="hover:bg-gray-100 transition">
+                        <td class="py-2 px-4">${file.filename}</td>
+                        <td class="py-2 px-4">${file.title}</td>
+                        <td class="py-2 px-4">${file.validation_output}</td>                        
+                    </tr>`;
+                    fileList.innerHTML += row;
+                });
+            });
+        }
+
+        // Close Page Function
+        function closePage() {
+            pywebview.api.quit()
+        }
+    </script>
+
+</body>
+</html>

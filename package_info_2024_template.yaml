@@ -1,0 +1,75 @@
+version: 1.1
+title: "Walking Dead S01"
+vendor_id: ""
+
+chapters:
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+  - { chapter_point: "00:00:00:00", stills: "00:00:00:00" }
+
+previews:
+  - { episode:  1, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  2, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  3, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  4, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  5, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  6, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  7, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  8, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode:  9, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" }
+  - { episode: 10, id: "EPISODE_ID_HERE", duration_sec: 0, duration_hms: "00:00:00:00" } 
+
+media_info:
+  episode:
+    - episodes: [1,2]
+      spoken_audio: ""
+      framerate: ""
+      burnt_in_subtitles: false
+      burnt_in_narratives: false
+      full_subtitles: false
+      forced_subtitles: false
+    # Add more episode groups as needed
+
+  feature:
+    spoken_audio: ""
+    frame_rate: ""
+    burnt_in_subtitles: false
+    burnt_in_narratives: false
+    alternate_audio: false
+    full_subtitles: false
+    forced_subtitles: false
+
+  trailer:
+    spoken_audio: ""
+    frame_rate: ""
+    burnt_in_subtitles: false
+    burnt_in_narratives: false
+    alternate_audio: false
+    full_subtitles: false
+    forced_subtitles: false
+
+crop_info:
+  episode:
+    - episodes: [4,3]
+      crop_top: 0
+      crop_bottom: 0
+      crop_left: 0
+      crop_right: 0
+  feature:
+    crop_top: 0
+    crop_bottom: 0
+    crop_left: 0
+    crop_right: 0
+  trailer:
+    crop_top: 0
+    crop_bottom: 0
+    crop_left: 0
+    crop_right: 0
