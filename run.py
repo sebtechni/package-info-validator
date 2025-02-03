@@ -1,8 +1,15 @@
+import os
 import webview
 from threading import Thread, Event
 import uvicorn
 from app import app  # Assuming app.py is your FastAPI application
 from webview.dom import DOMEventHandler
+
+#pyinstaller -F run.py
+#uv run pyinstaller run.spec
+#uv run python -m nuitka --mode=app run.py --macos-app-icon=icon.png --include-data-dir='./templates'='./templates' --include-data-dir='./static'=static --macos-app-version="0.1.0" --copyright='© difuze 2025'
+
+os.environ["IMKInputSession_Modern"] = "1"  
 
 def on_drag(e):
     pass
@@ -55,7 +62,7 @@ class Api:
     
 api = Api()    
     
-if __name__ == '__main__':     
+if __name__ == '__main__':       
     t = Thread(target=run)
     t.daemon = True  # Ensures the thread exits when the main program exits
     t.start()
@@ -68,18 +75,18 @@ if __name__ == '__main__':
         height=450,
         width=1100,
         frameless=False,
-        easy_drag=True,
+        easy_drag=False,
         on_top=False,
-        draggable=True,
+        draggable=False,
         js_api=api
     ) 
     api.set_window(window)
     webview.start()
+    #webview.start(gui='qt')
+    # webview.start(gui='edgechromium')
 
-    # webview.start(bind, window)
+    #webview.start(bind, window)
 
     # Signal FastAPI server to shut down
     stop_event.set()
 
-#pyinstaller -F run.py
-#uv run pyinstaller run.spec

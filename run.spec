@@ -1,6 +1,22 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 import os
+import sys
+
+#APP NAME
+APP_NAME = "Package Checker"
+COMPANY = "difuze"
+ICONS = False
+
+ICON_PATH = None
+
+if ICONS:
+    if os.name == 'nt': # Windows
+        ICON_PATH = 'icons/windows/icon.ico'
+    elif sys.platform == 'linux': # Linux
+        ICON_PATH = 'icons/linux/icon.png'
+    elif sys.platform == 'darwin': # macOS
+        ICON_PATH = 'icons/macos/icon.icns'
 
 current_dir = os.path.dirname(os.path.realpath(__name__))
 
@@ -44,3 +60,8 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
+
+app = BUNDLE(exe,
+             name=f'{APP_NAME}.app', 
+             icon=ICON_PATH,
+             bundle_identifier=f"com.{COMPANY}.{APP_NAME}")

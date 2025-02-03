@@ -1,9 +1,9 @@
 import os
 import sys
 from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi import APIRouter, Request, Form, FastAPI, UploadFile, File
+from fastapi.staticfiles import StaticFiles
+from fastapi import Request, FastAPI, UploadFile, File
 from fastapi.templating import Jinja2Templates
-from fastapi.params import Query
 from typing import List
 
 from validate import validate_yaml_schema
@@ -21,6 +21,7 @@ else:
 # Ensure FastAPI knows where to find templates
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def explore(request: Request):   
@@ -43,18 +44,18 @@ async def upload_files(files: List[UploadFile] = File(...)):
     return JSONResponse(content={"files": file_info})
 
 
-@app.post("/upload-htmx/", response_class=HTMLResponse)
-async def upload_files_htmx(files: List[UploadFile] = File(...)):
-    file_rows = ""
+# @app.post("/upload-htmx/", response_class=HTMLResponse)
+# async def upload_files_htmx(files: List[UploadFile] = File(...)):
+#     file_rows = ""
 
-    for file in files:
-        size_kb = round(len(await file.read()) / 1024, 2)
-        file_rows += f"""
-        <tr class="hover:bg-gray-100 transition">
-            <td class="py-2 px-4">{file.filename}</td>
-            <td class="py-2 px-4">{file.content_type}</td>
-            <td class="py-2 px-4">{size_kb} KB</td>
-        </tr>
-        """
+#     for file in files:
+#         size_kb = round(len(await file.read()) / 1024, 2)
+#         file_rows += f"""
+#         <tr class="hover:bg-gray-100 transition">
+#             <td class="py-2 px-4">{file.filename}</td>
+#             <td class="py-2 px-4">{file.content_type}</td>
+#             <td class="py-2 px-4">{size_kb} KB</td>
+#         </tr>
+#         """
 
-    return file_rows  # HTMX dynamically updates the table
+#     return file_rows  # HTMX dynamically updates the table

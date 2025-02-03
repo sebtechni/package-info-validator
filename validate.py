@@ -1,7 +1,6 @@
 from jsonschema import validate, ValidationError
 from fastapi import UploadFile
 import yaml
-import sys
 
 #uv run .\validate.py
 
