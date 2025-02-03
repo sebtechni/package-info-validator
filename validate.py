@@ -157,14 +157,14 @@ async def validate_yaml_schema(file: UploadFile, schema=schema):
 
     # Check file extension
     if not file.filename.lower().endswith((".yaml", ".yml")):
-        return title, f"❌ Error: '{file.filename}' is not a valid YAML file (must be .yaml or .yml)."
+        return title, "❌ Error: File is not a valid YAML file (must be .yaml or .yml)."
 
     # Read the file content
     content = await file.read()
 
     # Check file size
     if len(content) > MAX_FILE_SIZE:
-        return title, f"❌ Error: '{file.filename}' exceeds the maximum file size of 10MB."
+        return title, "❌ Error: File exceeds the maximum file size of 10MB."
 
     file.seek(0)  # Reset file pointer for further processing
 
@@ -173,18 +173,18 @@ async def validate_yaml_schema(file: UploadFile, schema=schema):
         data = yaml.safe_load(content)
 
         if data is None:
-            return title, f"❌ Error: YAML file '{file.filename}' is empty or has invalid content."
+            return title, "❌ Error: YAML file is empty or has invalid content."
 
         # Extract title if available
         title = data.get("title", "N/A")
 
     except yaml.YAMLError as e:
-        return title, f"❌ YAML Syntax Error in '{file.filename}': {e}"
+        return title, f"❌ YAML Syntax Error: {e}"
 
     # Validate against the schema
     try:
         validate(instance=data, schema=schema)
-        return title, f"✅ YAML file '{file.filename}' is valid and follows the schema."
+        return title, "✅ YAML file is valid and follows the schema."
     except ValidationError as e:
-        return title, f"❌ Schema validation error in '{file.filename}': {e.message}"
+        return title, f"❌ Schema validation error: {e.message}"
 
