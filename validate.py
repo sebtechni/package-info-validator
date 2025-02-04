@@ -2,10 +2,10 @@ from jsonschema import validate, ValidationError
 from fastapi import UploadFile
 import yaml
 
-#uv run .\validate.py
+# uv run .\validate.py
 
 # Define max file size (10MB = 10 * 1024 * 1024 bytes)
-MAX_FILE_SIZE = 10 * 1024 * 1024 
+MAX_FILE_SIZE = 10 * 1024 * 1024
 
 # Define the schema for validation
 schema = {
@@ -19,11 +19,17 @@ schema = {
             "items": {
                 "type": "object",
                 "properties": {
-                    "chapter_point": {"type": "string", "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}$"},
-                    "stills": {"type": "string", "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}$"}
+                    "chapter_point": {
+                        "type": "string",
+                        "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}$",
+                    },
+                    "stills": {
+                        "type": "string",
+                        "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}$",
+                    },
                 },
-                "required": ["chapter_point", "stills"]
-            }
+                "required": ["chapter_point", "stills"],
+            },
         },
         "previews": {
             "type": "array",
@@ -33,10 +39,13 @@ schema = {
                     "episode": {"type": "integer"},
                     "id": {"type": "string"},
                     "duration_sec": {"type": "integer"},
-                    "duration_hms": {"type": "string", "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}$"}
+                    "duration_hms": {
+                        "type": "string",
+                        "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}$",
+                    },
                 },
-                "required": ["episode", "id", "duration_sec", "duration_hms"]
-            }
+                "required": ["episode", "id", "duration_sec", "duration_hms"],
+            },
         },
         "media_info": {
             "type": "object",
@@ -49,28 +58,60 @@ schema = {
                             "episodes": {"type": "array", "items": {"type": "integer"}},
                             "spoken_audio": {"type": "string"},
                             "framerate": {"type": "string"},
-                            "burnt_in_subtitles": {"type": "boolean"},
-                            "burnt_in_narratives": {"type": "boolean"},
-                            "full_subtitles": {"type": "boolean"},
-                            "forced_subtitles": {"type": "boolean"}
+                            "burnt_in_subtitles": {
+                                "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                            },
+                            "burnt_in_narratives": {
+                                "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                            },
+                            "full_subtitles": {
+                                "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                            },
+                            "forced_subtitles": {
+                                "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                            },
                         },
-                        "required": ["episodes", "spoken_audio", "framerate", "burnt_in_subtitles",
-                                     "burnt_in_narratives", "full_subtitles", "forced_subtitles"]
-                    }
+                        "required": [
+                            "episodes",
+                            "spoken_audio",
+                            "framerate",
+                            "burnt_in_subtitles",
+                            "burnt_in_narratives",
+                            "full_subtitles",
+                            "forced_subtitles",
+                        ],
+                    },
                 },
                 "feature": {
                     "type": "object",
                     "properties": {
                         "spoken_audio": {"type": "string"},
                         "frame_rate": {"type": "string"},
-                        "burnt_in_subtitles": {"type": "boolean"},
-                        "burnt_in_narratives": {"type": "boolean"},
-                        "alternate_audio": {"type": "boolean"},
-                        "full_subtitles": {"type": "boolean"},
-                        "forced_subtitles": {"type": "boolean"}
+                        "burnt_in_subtitles": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "burnt_in_narratives": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "alternate_audio": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "full_subtitles": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "forced_subtitles": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
                     },
-                    "required": ["spoken_audio", "frame_rate", "burnt_in_subtitles", "burnt_in_narratives",
-                                 "alternate_audio", "full_subtitles", "forced_subtitles"]
+                    "required": [
+                        "spoken_audio",
+                        "frame_rate",
+                        "burnt_in_subtitles",
+                        "burnt_in_narratives",
+                        "alternate_audio",
+                        "full_subtitles",
+                        "forced_subtitles",
+                    ],
                 },
                 "trailer": {
                     "type": "object",
@@ -81,13 +122,20 @@ schema = {
                         "burnt_in_narratives": {"type": "boolean"},
                         "alternate_audio": {"type": "boolean"},
                         "full_subtitles": {"type": "boolean"},
-                        "forced_subtitles": {"type": "boolean"}
+                        "forced_subtitles": {"type": "boolean"},
                     },
-                    "required": ["spoken_audio", "frame_rate", "burnt_in_subtitles", "burnt_in_narratives",
-                                 "alternate_audio", "full_subtitles", "forced_subtitles"]
-                }
+                    "required": [
+                        "spoken_audio",
+                        "frame_rate",
+                        "burnt_in_subtitles",
+                        "burnt_in_narratives",
+                        "alternate_audio",
+                        "full_subtitles",
+                        "forced_subtitles",
+                    ],
+                },
             },
-            "minProperties": 1  # Ensures at least one of episode, feature, or trailer is present
+            "minProperties": 1,  # Ensures at least one of episode, feature, or trailer is present
         },
         "crop_info": {
             "type": "object",
@@ -99,14 +147,23 @@ schema = {
                             "items": {
                                 "type": "object",
                                 "properties": {
-                                    "episodes": {"type": "array", "items": {"type": "integer"}},
+                                    "episodes": {
+                                        "type": "array",
+                                        "items": {"type": "integer"},
+                                    },
                                     "crop_top": {"type": "integer"},
                                     "crop_bottom": {"type": "integer"},
                                     "crop_left": {"type": "integer"},
-                                    "crop_right": {"type": "integer"}
+                                    "crop_right": {"type": "integer"},
                                 },
-                                "required": ["episodes", "crop_top", "crop_bottom", "crop_left", "crop_right"]
-                            }
+                                "required": [
+                                    "episodes",
+                                    "crop_top",
+                                    "crop_bottom",
+                                    "crop_left",
+                                    "crop_right",
+                                ],
+                            },
                         },
                         {  # Single object format
                             "type": "object",
@@ -114,10 +171,15 @@ schema = {
                                 "crop_top": {"type": "integer"},
                                 "crop_bottom": {"type": "integer"},
                                 "crop_left": {"type": "integer"},
-                                "crop_right": {"type": "integer"}
+                                "crop_right": {"type": "integer"},
                             },
-                            "required": ["crop_top", "crop_bottom", "crop_left", "crop_right"]
-                        }
+                            "required": [
+                                "crop_top",
+                                "crop_bottom",
+                                "crop_left",
+                                "crop_right",
+                            ],
+                        },
                     ]
                 },
                 "feature": {
@@ -126,9 +188,9 @@ schema = {
                         "crop_top": {"type": "integer"},
                         "crop_bottom": {"type": "integer"},
                         "crop_left": {"type": "integer"},
-                        "crop_right": {"type": "integer"}
+                        "crop_right": {"type": "integer"},
                     },
-                    "required": ["crop_top", "crop_bottom", "crop_left", "crop_right"]
+                    "required": ["crop_top", "crop_bottom", "crop_left", "crop_right"],
                 },
                 "trailer": {
                     "type": "object",
@@ -136,16 +198,17 @@ schema = {
                         "crop_top": {"type": "integer"},
                         "crop_bottom": {"type": "integer"},
                         "crop_left": {"type": "integer"},
-                        "crop_right": {"type": "integer"}
+                        "crop_right": {"type": "integer"},
                     },
-                    "required": ["crop_top", "crop_bottom", "crop_left", "crop_right"]
-                }
+                    "required": ["crop_top", "crop_bottom", "crop_left", "crop_right"],
+                },
             },
-            "minProperties": 1  # Ensures at least one of episode, feature, or trailer is present
-        }
+            "minProperties": 1,  # Ensures at least one of episode, feature, or trailer is present
+        },
     },
-    "required": ["media_info", "crop_info"]  # Only these two are mandatory
+    "required": ["media_info", "crop_info"],  # Only these two are mandatory
 }
+
 
 async def validate_yaml_schema(file: UploadFile, schema=schema):
     """
@@ -187,4 +250,3 @@ async def validate_yaml_schema(file: UploadFile, schema=schema):
         return title, "✅ YAML file is valid and follows the schema."
     except ValidationError as e:
         return title, f"❌ Schema validation error: {e.message}"
-
