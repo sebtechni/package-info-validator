@@ -7,7 +7,8 @@ from webview.dom import DOMEventHandler
 
 #pyinstaller -F run.py
 #uv run pyinstaller run.spec
-#uv run python -m nuitka --mode=app run.py --macos-app-icon=icon.png --include-data-dir='./templates'='./templates' --include-data-dir='./static'=static --macos-app-version="0.1.0" --copyright='© difuze 2025'
+#uv run python -m nuitka --mode=app run.py --macos-app-icon=icon.png --include-data-dir='./templates'='./templates' --include-data-dir='./static'=static --macos-app-version="0.1.2" --copyright='© difuze 2025'
+#codesign --deep --force --verbose --sign - run.app
 
 os.environ["IMKInputSession_Modern"] = "1"  
 
