@@ -118,11 +118,21 @@ schema = {
                     "properties": {
                         "spoken_audio": {"type": "string"},
                         "frame_rate": {"type": "string"},
-                        "burnt_in_subtitles": {"type": "boolean"},
-                        "burnt_in_narratives": {"type": "boolean"},
-                        "alternate_audio": {"type": "boolean"},
-                        "full_subtitles": {"type": "boolean"},
-                        "forced_subtitles": {"type": "boolean"},
+                        "burnt_in_subtitles": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "burnt_in_narratives": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "alternate_audio": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "full_subtitles": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
+                        "forced_subtitles": {
+                            "oneOf": [{"type": "boolean"}, {"type": "string"}]
+                        },
                     },
                     "required": [
                         "spoken_audio",
@@ -220,7 +230,7 @@ async def validate_yaml_schema(file: UploadFile, schema=schema):
 
     # Check file extension
     if not file.filename.lower().endswith((".yaml", ".yml")):
-        return title, "❌ Error: File is not a valid YAML file (must be .yaml or .yml)."
+        return title, "❌ Error: Not a valid YAML file (must be .yaml or .yml)."
 
     # Read the file content
     content = await file.read()
@@ -249,4 +259,4 @@ async def validate_yaml_schema(file: UploadFile, schema=schema):
         validate(instance=data, schema=schema)
         return title, "✅ YAML file is valid and follows the schema."
     except ValidationError as e:
-        return title, f"❌ Schema validation error: {e.message}"
+        return title, f"❌ Schema Validation Error: {e.message}"
