@@ -413,13 +413,13 @@ wheels = [
 
 [[package]]
 name = "nuitka"
-version = "2.6.2"
+version = "2.6.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ordered-set" },
     { name = "zstandard" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/53/a4/0f47b9d76298c6f4bda660956865065afdda7bdfd8c7ac89bbd45abd3f35/Nuitka-2.6.2.tar.gz", hash = "sha256:4557b4fa1c2c0a67c8ac3fb96bb76c0566faf419269cc328304a7fbd4eadf7c5", size = 3865407 }
+sdist = { url = "https://files.pythonhosted.org/packages/31/c5/3d9bc674932cecce96f1dea18d72a4017c8d6fc904ff91ac02773898cf26/Nuitka-2.6.4.tar.gz", hash = "sha256:9fc8d5d16b7fd43520312128cd979eea00f5abbffbce59cc2e6f18cd615dfedb", size = 3867647 }
 
 [[package]]
 name = "numpy"
@@ -565,7 +565,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.8" },
     { name = "imageio", specifier = ">=2.37.0" },
     { name = "jsonschema", specifier = ">=4.23.0" },
-    { name = "nuitka", specifier = "==2.6.2" },
+    { name = "nuitka", specifier = "==2.6.4" },
     { name = "pyinstaller", specifier = ">=6.11.1" },
     { name = "pywebview", specifier = ">=5.4" },
     { name = "pyyaml", specifier = ">=6.0.2" },

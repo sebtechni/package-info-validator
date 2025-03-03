@@ -145,7 +145,9 @@ schema = {
                     ],
                 },
             },
-            "minProperties": 1,  # Ensures at least one of episode, feature, or trailer is present
+            "minProperties": 1,
+            "maxProperties": 1,
+            "additionalProperties": False
         },
         "crop_info": {
             "type": "object",
@@ -213,12 +215,26 @@ schema = {
                     "required": ["crop_top", "crop_bottom", "crop_left", "crop_right"],
                 },
             },
-            "minProperties": 1,  # Ensures at least one of episode, feature, or trailer is present
+            "minProperties": 1,
+            "maxProperties": 1,
+            "additionalProperties": False
         },
     },
     "required": ["media_info", "crop_info"],  # Only these two are mandatory
 }
 
+class DuplicateKeyError(Exception):
+    pass
+
+class UniqueKeyLoader(yaml.SafeLoader):
+    def construct_mapping(self, node, deep=False):
+        mapping = {}
+        for key_node, value_node in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if key in mapping:
+                raise DuplicateKeyError(f"Duplicate key found: {key}")
+            mapping[key] = self.construct_object(value_node, deep=deep)
+        return mapping
 
 async def validate_yaml_schema(file: UploadFile, schema=schema):
     """
@@ -243,13 +259,16 @@ async def validate_yaml_schema(file: UploadFile, schema=schema):
 
     try:
         # Parse YAML content
-        data = yaml.safe_load(content)
+        data = yaml.load(content, Loader=UniqueKeyLoader)
 
         if data is None:
             return title, "❌ Error: YAML file is empty or has invalid content."
 
         # Extract title if available
         title = data.get("title", "N/A")
+        
+    except DuplicateKeyError as e:
+        return title, f"❌ YAML Duplicate Key Error: {e}"        
 
     except yaml.YAMLError as e:
         return title, f"❌ YAML Syntax Error: {e}"

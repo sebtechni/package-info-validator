@@ -5,10 +5,12 @@ import uvicorn
 from app import app  # Assuming app.py is your FastAPI application
 from webview.dom import DOMEventHandler
 
+#uv run run.py
 #pyinstaller -F run.py
 #uv run pyinstaller run.spec
-#uv run python -m nuitka --mode=app run.py --macos-app-icon=icon.png --include-data-dir='./templates'='./templates' --include-data-dir='./static'=static --macos-app-version="0.1.2" --copyright='© difuze 2025'
+#uv run python -m nuitka --mode=app run.py --macos-app-icon=icon.png --include-data-dir='./templates'='./templates' --include-data-dir='./static'=static --macos-app-version="0.1.3" --copyright='© difuze 2025'
 #codesign --deep --force --verbose --sign - run.app
+#scp Package_Info_Validator.0.1.3.zip devops:/mnt/ONYX/01_dsc/elements/tools/package_validator
 
 os.environ["IMKInputSession_Modern"] = "1"  
 

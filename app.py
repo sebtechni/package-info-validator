@@ -42,20 +42,3 @@ async def upload_files(files: List[UploadFile] = File(...)):
         })
 
     return JSONResponse(content={"files": file_info})
-
-
-# @app.post("/upload-htmx/", response_class=HTMLResponse)
-# async def upload_files_htmx(files: List[UploadFile] = File(...)):
-#     file_rows = ""
-
-#     for file in files:
-#         size_kb = round(len(await file.read()) / 1024, 2)
-#         file_rows += f"""
-#         <tr class="hover:bg-gray-100 transition">
-#             <td class="py-2 px-4">{file.filename}</td>
-#             <td class="py-2 px-4">{file.content_type}</td>
-#             <td class="py-2 px-4">{size_kb} KB</td>
-#         </tr>
-#         """
-
-#     return file_rows  # HTMX dynamically updates the table
